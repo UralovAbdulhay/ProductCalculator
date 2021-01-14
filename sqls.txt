@@ -1,0 +1,132 @@
+CREATE TABLE tovar
+(
+    id            INTEGER      NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name          VARCHAR(200) NOT NULL,
+    model         VARCHAR(200) NOT NULL,
+    kod           VARCHAR(50)  NOT NULL,
+    maker         VARCHAR(200) NOT NULL,
+    cost          DOUBLE       NOT NULL,
+    cost_type     VARCHAR(20)  NOT NULL,
+    trans_cost    DOUBLE       NOT NULL,
+    aksiz_cost    DOUBLE       NOT NULL,
+    poshlina_cost DOUBLE       NOT NULL,
+    ddp_cost      DOUBLE       NOT NULL,
+    date          DATETIME     NOT NULL,
+    ulchov_type   VARCHAR(10)  NOT NULL,
+    komment       VARCHAR(1500)
+)
+
+
+CREATE TABLE maker
+(
+    id      INTEGER      NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name    VARCHAR(200) NOT NULL,
+    country VARCHAR(200),
+    sana    DATETIME     NOT NULL
+)
+
+
+CREATE TABLE xodimlar
+(
+    id         INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    sure_name  VARCHAR(50) NOT NULL,
+    last_name  VARCHAR(50),
+    birth_day  DATETIME    NOT NULL,
+    sana       DATETIME    NOT NULL
+
+)
+
+
+
+CREATE TABLE course
+(
+    id             INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title          VARCHAR(50) NOT NULL,
+    code           VARCHAR(50) NOT NULL,
+    cb_price       DOUBLE      NOT NULL,
+    nbu_buy_price  DOUBLE,
+    nbu_cell_price DOUBLE,
+    date           DATETIME,
+    reftersh_date  DATETIME    NOT NULL
+
+)
+
+
+
+CREATE TABLE project
+(
+    id                INTEGER      NOT NULL PRIMARY KEY AUTOINCREMENT,
+    nomer_zakaz       NUMERIC      NOT NULL,
+    name              VARCHAR(500) NOT NULL,
+    start_date        DATETIME,
+    shoshilinch       BOOLEAN,
+    muhum             BOOLEAN,
+    client_id         INTEGER      NOT NULL,
+    from_com_id       INTEGER,
+    raxbar_xodim_id   INTEGER      NOT NULL,
+    kiritgan_xodim_id INTEGER      NOT NULL,
+    masul_xodim_id    INTEGER      NOT NULL,
+    end_date          DATETIME     NOT NULL,
+    formula           VARCHAR(50),
+    komment           VARCHAR(1500)
+)
+
+
+
+CREATE TABLE zakazList
+(
+    id                 INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    tovar_id           INTEGER     NOT NULL,
+    maker_id           INTEGER     NOT NULL,
+    count              INTEGER     NOT NULL,
+    tovar_cost         DOUBLE      NOT NULL,
+    tovar_ddp          DOUBLE      NOT NULL,
+    tovar_trans_cost   DOUBLE      NOT NULL,
+    tovar_aksiz_cost   DOUBLE      NOT NULL,
+    tovar_poshlin_cost DOUBLE      NOT NULL,
+    cost_type          VARCHAR(20) NOT NULL,
+    ulchov_type        VARCHAR(20)
+)
+
+
+
+
+CREATE TABLE whatever(
+     ....
+     timestamp DATE DEFAULT (datetime('now','localtime')),
+     ...
+);
+
+
+select ProjectZakazList{
+
+	SELECT zakazList.id,
+       zakazList.tovar_id,
+       tovar.name                   AS tovarName,
+       tovar.kod                    AS tovarKod,
+       maker.name                   AS tovarMaker,
+       tovar.model                  AS tovarModel,
+       zakazList.tovar_cost         AS tovarNarx,
+       zakazList.tovar_ddp          AS tvarDDP,
+       zakazList.cost_type          AS tovarCostType,
+       zakazList.tovar_trans_cost   AS tovarTrans,
+       zakazList.tovar_aksiz_cost   AS tovarAksiz,
+       zakazList.tovar_poshlin_cost AS tovarPoshlina,
+       tovar.date                   AS tovarSana,
+       zakazList.ulchov_type        AS ulchovType,
+       tovar.komment                AS tovarKomment,
+       zakazList.project_id
+
+FROM zakazList
+         INNER JOIN tovar
+                    ON zakazList.tovar_id = tovar.id
+         INNER JOIN maker
+                    ON zakazList.maker_id = maker.id
+WHERE zakazList.project_id = 1;
+
+}
+
+
+
+	
